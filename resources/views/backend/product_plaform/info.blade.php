@@ -16,7 +16,7 @@
 					@include('backend.layout.alert_info')
 					<table class="table table-responsive table-hover">
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><input type="checkbox" onclick="checkAll()" id="checked"></td>
 							<th ><span>保险产品简称</span></th>
 							<th ><span>保险产品全称</span></th>
 							<th >操作</th>
@@ -28,7 +28,7 @@
 						@else
 							@foreach($insurances as $value)
 								<tr>
-									<td><input type="checkbox" name="insurance_ids[]" value="{{$value['id']}}"></td>
+									<td><input type="checkbox" name="insurance_ids" value="{{$value['id']}}"></td>
 									<td>{{$value['display_name']}}</td>
 									<td>{{$value['name']}}</td>
 									<td><a target="_blank" href="/backend/product/info">查看详情</a></td>
@@ -57,5 +57,15 @@
             $("#sell_status").val(sell_status);
             $("#ins_id").val(insurance_id);
         });
+        //全选（方法一：each 循环）
+        function checkAll() {
+                $.each($("input[type=checkbox]"), function(i) {
+                    if ($(this).attr("checked") == false) {
+                        $(this).attr("checked", "true");
+                    }else{
+                        $(this).attr("checked", "false");
+                    }
+                });
+        }
 	</script>
 @stop
