@@ -150,6 +150,11 @@ Route::group(['prefix' => '/backend', 'namespace'=>'BackendControllers'],functio
 //                Route::post('store/{code}', 'RestrictGenesController@store');
 //                Route::post('values/store/{id}', 'RestrictGenesController@storeValues');
             });
+            //产品分配
+			route::group(['prefix'=>'platform'], function(){
+				Route::any('/', 'ProductPlaformController@index');
+				Route::any('/info/{id}', 'ProductPlaformController@info');
+			});
         });
 
 

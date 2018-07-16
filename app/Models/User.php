@@ -36,4 +36,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(InsOrder::class, 'create_account_id', 'account_id');
     }
+
+    public function gerPlafrom(){
+		return $this->hasMany('App\Models\ProductPlatform','manager_uuid', 'account_id');
+	}
 }

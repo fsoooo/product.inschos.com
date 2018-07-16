@@ -49,5 +49,10 @@ $sms_active = preg_match("/\/sms\//",Request::getPathinfo()) ? "active open" : "
                 产品绑定列表
             </a>
         </li>
+        <li>
+            <a href="{{asset('backend/product/platform')}}">
+                产品分配列表
+            </a>
+        </li>
     </ul>
 </li>
