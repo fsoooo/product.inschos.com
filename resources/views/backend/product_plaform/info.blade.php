@@ -10,13 +10,13 @@
 					<p class="panel-title">产品分配详情-{{$user_info['name']??""}}</p>
 				</div>
 				<div class="panel-heading">
-					<button>确认分配</button>
+					<button id="submit">确认分配</button>
 				</div>
 				<div class="panel-body">
 					@include('backend.layout.alert_info')
 					<table class="table table-responsive table-hover">
 						<tr>
-							<td><input type="checkbox" onclick="checkAll()" id="checked"></td>
+							<td><input type="checkbox"  id="checkAllChange"></td>
 							<th ><span>保险产品简称</span></th>
 							<th ><span>保险产品全称</span></th>
 							<th >操作</th>
@@ -28,7 +28,7 @@
 						@else
 							@foreach($insurances as $value)
 								<tr>
-									<td><input type="checkbox" name="insurance_ids" value="{{$value['id']}}"></td>
+									<td><input type="checkbox" class="insurance_id" name="insurance_ids" value="{{$value['id']}}" @if(!empty($value['paltfrom'])) checked @endif></td>
 									<td>{{$value['display_name']}}</td>
 									<td>{{$value['name']}}</td>
 									<td><a target="_blank" href="/backend/product/info">查看详情</a></td>
@@ -37,6 +37,19 @@
 						@endif
 					</table>
 				</div>
+			</div>
+		</div>
+	</div>
+	<button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-8" style="display: none" id="notice">消息提醒</button>
+	{{--添加--}}
+	<div class="md-modal md-effect-8 md-hide" id="modal-8">
+		<div class="md-content">
+			<div class="modal-header">
+				<button class="md-close close">×</button>
+				<h3 class="modal-title"><b>提示</b></h3>
+			</div>
+			<div class="modal-body" id="notice_body"></div>
+			<div class="modal-footer">
 			</div>
 		</div>
 	</div>
@@ -57,15 +70,41 @@
             $("#sell_status").val(sell_status);
             $("#ins_id").val(insurance_id);
         });
-        //全选（方法一：each 循环）
-        function checkAll() {
-                $.each($("input[type=checkbox]"), function(i) {
-                    if ($(this).attr("checked") == false) {
-                        $(this).attr("checked", "true");
-                    }else{
-                        $(this).attr("checked", "false");
-                    }
+        $("#checkAllChange").click(function() {
+            if (this.checked == true) {
+                $(".insurance_id").each(function() {
+                    this.checked = true;
                 });
-        }
+            } else {
+                $(".insurance_id").each(function() {
+                    this.checked = false;
+                });
+            }
+        });
+        $("#submit").click(function () {
+            var arr = new Array();
+            var account_id = "{{$user_info['account_id']}}";
+            $(".insurance_id").each(function(i) {
+                if (this.checked == true) {
+                    arr[i] = $(this).val();
+                }
+            });
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "/backend/product/platform/doPlatform",
+                type: "post",
+                data: {
+                    'account_id': account_id,
+                    'insurance_ids': arr
+                },
+                dataType: "json",
+                success: function (data) {
+					$("#notice_body").html(data.msg);
+					$("#notice").click();
+                }
+            });
+		});
 	</script>
 @stop

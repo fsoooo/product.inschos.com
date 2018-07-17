@@ -47,4 +47,8 @@ class Insurance extends Model
     {
         return $this->hasMany('App\Models\InsApiBind', 'insurance_id' , 'id');
     }
+
+    public function paltfrom(){
+		return $this->hasOne('App\Models\ProductPlatform', 'product_id', 'id');
+	}
 }
