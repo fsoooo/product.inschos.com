@@ -91,6 +91,7 @@
         $("#submit").click(function () {
             var arr = new Array();
             var account_id = "{{$user_info['account_id']}}";
+            var page = "{{$_GET['page']??1}}";
             $(".insurance_id").each(function(i) {
                 if (this.checked == true) {
                     arr[i] = $(this).val();
@@ -104,7 +105,8 @@
                 type: "post",
                 data: {
                     'account_id': account_id,
-                    'insurance_ids': arr
+                    'insurance_ids': arr,
+                    'page': page,
                 },
                 dataType: "json",
                 success: function (data) {
