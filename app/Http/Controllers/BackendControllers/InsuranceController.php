@@ -544,10 +544,18 @@ class InsuranceController extends BaseController
      */
     public function doSetSellStatus(Request $request){
         $input = $request->all();
-        Insurance::where('id',$input['id'])->update([
-            'sell_status'=>$input['sell_status'],
-            'uptime'=>date('Y-m-d H:i:s',time())
-        ]);
+        dump($input);
+        if($input['sell_status']=='2'){
+			Insurance::where('id',$input['id'])->update([
+				'sell_status'=>$input['sell_status'],
+				'uptime'=>date('Y-m-d H:i:s',time())
+			]);
+		}else{
+			Insurance::where('id',$input['id'])->update([
+				'sell_status'=>$input['sell_status'],
+				'uptime'=>''
+			]);
+		}
         return redirect('/backend/product/insurance/bind/list')->with('status', '设置成功');
     }
 

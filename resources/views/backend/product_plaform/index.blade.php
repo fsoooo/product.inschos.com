@@ -44,6 +44,10 @@
 					</table>
 				</div>
 			</div>
+			{{--分页--}}
+			<div style="text-align: center;">
+				{{ $users->links() }}
+			</div>
 		</div>
 	</div>
 	<div class="md-overlay"></div>

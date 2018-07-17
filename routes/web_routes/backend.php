@@ -155,7 +155,8 @@ Route::group(['prefix' => '/backend', 'namespace'=>'BackendControllers'],functio
 				Route::any('/', 'ProductPlaformController@index');
 				Route::any('/info/{id}', 'ProductPlaformController@info');
 				Route::any('/doPlatform', 'ProductPlaformController@doPlatform');
-
+				Route::any('/setBrokerage/{account_id}/{product_id}', 'ProductPlaformController@setBrokerage');
+				Route::any('/setBrokeragesubmit', 'ProductPlaformController@setBrokeragesubmit');
 			});
         });
 

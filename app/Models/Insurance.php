@@ -51,4 +51,8 @@ class Insurance extends Model
     public function paltfrom(){
 		return $this->hasOne('App\Models\ProductPlatform', 'product_id', 'id');
 	}
+
+	public function brokerage(){
+		return $this->hasMany('App\Models\ProductBrokerage', 'product_id', 'id');
+	}
 }

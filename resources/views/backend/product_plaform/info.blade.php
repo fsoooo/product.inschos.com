@@ -31,12 +31,19 @@
 									<td><input type="checkbox" class="insurance_id" name="insurance_ids" value="{{$value['id']}}" @if(!empty($value['paltfrom'])) checked @endif></td>
 									<td>{{$value['display_name']}}</td>
 									<td>{{$value['name']}}</td>
-									<td><a target="_blank" href="/backend/product/info">查看详情</a></td>
+									<td>
+										<a target="_blank" href="/backend/product/platform/setBrokerage/{{$user_info['account_id']}}/{{$value['id']}}">
+											@if(empty($value['brokerage'])||count($value['brokerage'])==0) 设置佣金 @else 查看佣金 @endif
+										</a>
+									</td>
 								</tr>
 							@endforeach
 						@endif
 					</table>
 				</div>
+			</div>
+			<div style="text-align: center;">
+				{{ $insurances->links() }}
 			</div>
 		</div>
 	</div>

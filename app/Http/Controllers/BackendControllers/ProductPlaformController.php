@@ -6,6 +6,10 @@ namespace App\Http\Controllers\BackendControllers;
 use App\Models\Insurance;
 use App\Models\User;
 use App\Models\ProductPlatform;
+use App\Models\ProductBrokerage;
+use App\Models\InsApiBind;
+use App\Models\InsApiBrokerage;
+
 use \Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,9 +28,14 @@ class ProductPlaformController extends BaseController
 	public function info($user_id)
 	{
 		$user_info = User::where('id', $user_id)->select('name', 'account_id')->first();
-		$insurances = Insurance::with(['paltfrom' => function ($a) {
+		$insurances = Insurance::with([
+			'paltfrom' => function ($a) {
 			$a->where('end_time', '');
-		}])->paginate(config('list_num.user'));
+		},
+			'brokerage'=> function ($a) {
+			$a->where('end_time', '0');
+		}
+		])->paginate(config('list_num.user'));
 		return view('backend.product_plaform.info', compact('insurances', 'user_info', 'product_platfrom'));
 	}
 
@@ -92,6 +101,25 @@ class ProductPlaformController extends BaseController
 			}
 		}
 		return json_encode(['status' => 200, 'msg' => '产品分配成功']);
+	}
+
+	public function setBrokerage($account_id,$product_id){
+		$bind = InsApiBind::with(['insurance', 'apiFrom', 'insApiBrokerage'=>function($q){
+			$q->where('status', 1);
+		}])
+			->where('insurance_id',$product_id)
+			->first();
+		$manager = User::where('account_id',$account_id)->first();
+		$brokerage = ProductBrokerage::where('manager_uuid',$account_id)
+			->where('product_id',$product_id)
+			->first();
+		return view('backend.product_plaform.brokerage', compact('bind','manager','brokerage'));
+	}
+
+	public function setBrokeragesubmit(){
+
+
+
 	}
 
 }
