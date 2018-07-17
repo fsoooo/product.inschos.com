@@ -152,22 +152,46 @@ class ProductPlaformController extends BaseController
 			->where('manager_uuid', $input['manager_uuid'])
 			->where('pay_category_id', $input['pay_category_id'])
 			->get();
-		if (empty($repeat)||count($repeat)==0) {
-			for ($i = 1; $i <= $input['by_stages_way']; $i++) {
-				 ProductBrokerage::insert([
-					'product_id' => $input['product_id'],
-					'manager_uuid' => $input['manager_uuid'],
-					'pay_category_id' => $input['pay_category_id'],
-					'pay_times_unit' => $input['pay_times_unit'][$i][0],
-					'pay_times' => $input['pay_times'][$i][0],
-					'ins_brokerage' => $input['ins_brokerage'][$i][0],
-					'platform_brokerage' => $input['platform_brokerage'][$i][0],
-					'channel_brokerage' => $input['channel_brokerage'][$i][0],
-					'agent_brokerage' => $input['agent_brokerage'][$i][0],
-					'start_time' => $input['start_time'][$i][0],
-					'end_time' => $input['end_time'][$i][0],
-				]);
+		DB::beginTransaction();
+		try {
+			if (empty($repeat) || count($repeat) == 0) {
+				for ($i = 1; $i <= $input['by_stages_way']; $i++) {
+					ProductBrokerage::insert([
+						'product_id' => $input['product_id'],
+						'manager_uuid' => $input['manager_uuid'],
+						'pay_category_id' => $input['pay_category_id'],
+						'pay_times_unit' => $input['pay_times_unit'][$i][0],
+						'pay_times' => $input['pay_times'][$i][0],
+						'ins_brokerage' => $input['ins_brokerage'][$i][0],
+						'platform_brokerage' => $input['platform_brokerage'][$i][0],
+						'channel_brokerage' => $input['channel_brokerage'][$i][0],
+						'agent_brokerage' => $input['agent_brokerage'][$i][0],
+						'start_time' => $input['start_time'][$i][0]??" ",
+						'end_time' => $input['end_time'][$i][0]??" ",
+					]);
+				}
+				$product_res = ProductPlatform::where('product_id', $input['product_id'])
+					->where('manager_uuid', $input['manager_uuid'])
+					->select('id')
+					->first();
+				if (empty($product_res)) {
+					ProductPlatform::insert([
+						'product_id' =>$input['product_id'],
+						'manager_uuid' => $input['manager_uuid'],
+						'status' => '1',
+						'off_reason' => '',
+						'start_time' => TimeStamp::getMillisecond(),
+						'end_time' => '',
+						'upper_time' => TimeStamp::getMillisecond(),
+					]);
+				}
+				DB::commit();
 			}
+			return redirect('/backend/product/platform/setBrokerageInfo/' . $input['manager_uuid'] . '/' . $input['product_id'] . '/' . $input['pay_category_id'])->with('status', '缴期佣金设置成功!');
+		} catch (\Exception $e) {
+			DB::rollBack();
+			return redirect('/backend/product/platform/setBrokerageInfo/' . $input['manager_uuid'] . '/' . $input['product_id'] . '/' . $input['pay_category_id'])->withErrors('缴期佣金设置失败!');
+		}
 //		} else {
 //			for ($i = 1; $i <= $input['by_stages_way']; $i++) {
 //				ProductBrokerage::where('product_id', $input['product_id'])
@@ -184,7 +208,6 @@ class ProductPlaformController extends BaseController
 //						'end_time' => $input['end_time'][$i][0],
 //					]);
 //			}
-		}
-		return redirect('/backend/product/platform/setBrokerageInfo/'.$input['manager_uuid'].'/'.$input['product_id'].'/'.$input['pay_category_id'])->with('status', '缴期佣金设置成功!');
+
 	}
 }

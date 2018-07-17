@@ -44,12 +44,12 @@
 												</option>
 											</select>
 										</td>
-										<td><input name='ins_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['ins_brokerage']}}"></td>
-										<td><input name='platform_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['platform_brokerage']}}"></td>
-										<td><input name='channel_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['channel_brokerage']}}"></td>
-										<td><input name='agent_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['agent_brokerage']}}"></td>
-										<td><input name='start_time[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['start_time']}}"></td>
-										<td><input name='end_time[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['end_time']}}"></td>
+										<td><input name='ins_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['ins_brokerage']??''}}"></td>
+										<td><input name='platform_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['platform_brokerage']??''}}"></td>
+										<td><input name='channel_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['channel_brokerage']??''}}"></td>
+										<td><input name='agent_brokerage[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['agent_brokerage']??''}}"></td>
+										<td><input name='start_time[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['start_time']??''}}"></td>
+										<td><input name='end_time[{{$i}}][]' type="text" value="{{$brokerage[$i-1]['end_time']??''}}"></td>
 									</tr>
 								@endfor
 							@endif
