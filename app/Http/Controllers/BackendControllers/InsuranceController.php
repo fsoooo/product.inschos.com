@@ -120,6 +120,7 @@ class InsuranceController extends BaseController
             $insurance->company_id = $input['company_id'];
             $insurance->type = $input['insurance_type'];
             $insurance->content = $input['content'];
+            $insurance->fee_description = $input['fee_description'];
             $insurance->base_price = $input['base_price'] * 100;  //基础保费
             $insurance->base_stages_way = $input['base_stages_way'];  //缴别
             $insurance->base_ratio = $input['base_ratio'];  //基础佣金比例
@@ -259,7 +260,7 @@ class InsuranceController extends BaseController
             $insurance->company_id = $input['company_id'];
             $insurance->type = $input['insurance_type'];
             $insurance->content = $input['content'];
-
+			$insurance->fee_description = $input['fee_description'];
             $insurance->base_price = $input['base_price'] * 100;  //基础保费
             $insurance->base_stages_way = $input['base_stages_way'];  //缴别
             $insurance->base_ratio = $input['base_ratio'];  //基础佣金比例
@@ -543,9 +544,9 @@ class InsuranceController extends BaseController
      */
     public function doSetSellStatus(Request $request){
         $input = $request->all();
-//        dd($input);
         Insurance::where('id',$input['id'])->update([
             'sell_status'=>$input['sell_status'],
+            'uptime'=>date('Y-m-d H:i:s',time())
         ]);
         return redirect('/backend/product/insurance/bind/list')->with('status', '设置成功');
     }

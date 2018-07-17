@@ -151,6 +151,10 @@
                                 <label for="exampleTextarea"><span class="red">*</span>保险产品说明(投保须知)</label>
                                 <textarea class="form-control" id="exampleTextarea" name="content" rows="3"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="exampleTextarea"><span class="red">*</span>产品费用简述</label>
+                                <textarea class="form-control" name="fee_description" rows="3"></textarea>
+                            </div>
                             <div class="modal-footer">
                                 <button type="submit" id="form-submit" class="btn btn-primary">确认提交</button>
                             </div>
